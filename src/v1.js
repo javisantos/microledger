@@ -111,7 +111,7 @@ export default class Microledger {
 
             this.genesis = this.secretKey
               ? faythe.deserialize(faythe.secretDecrypt(this.secretKey, genesisBuffer))
-              : faythe.deserialize(this.genesis)
+              : faythe.deserialize(genesisBuffer)
 
             this.stat()
               .then(async (stat) => {

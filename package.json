@@ -1,9 +1,10 @@
 {
   "name": "microledger",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A single file ledger with crypto features for append only objects",
   "main": "./index.js",
   "module": "./src/main.js",
+  "browser": "./dist/microledger-esm.js",
   "scripts": {
     "build": "del dist && PRODUCTION=1 rollup -c",
     "lint": "eslint ./src/main.js ./test/test.js",
