@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Append Only Object</title>
+
+    <script type="module">
+        import Microledger from '../dist/microledger-esm.js'
+        const genesis = {
+            "authorization": {
+                "profiles": [
+                    { "key": "#Mv6gmMNa", "roles": ["edge"] },              // an "edge" key
+                    { "key": "#H3C2AVvL", "roles": ["offline"] },           // an "offline" key
+                ],
+                "rules": [
+                    {
+                        "grant": ["authcrypt", "plaintext", "sign"],
+                        "when": { "roles": "edge" },
+                        "id": "e1e7d7bc"
+                    },
+                    {
+                        "revoke-implicit": ["rotate"],
+                        "when": { "key": "#H3C2AVvL" },
+                        "id": "f908a18c"
+                    },
+                    {
+                        "grant": ["key_admin", "se_admin", "rule_admin"],
+                        "when": {
+                            "any": [{ "roles": "offline" }, { "roles": "biometric" }],
+                            "n": 2
+                        },
+                        "id": "8586d26c"
+                    }
+
+                ]
+            }
+        }
+        const log = new Microledger('mystorageesm', { genesis: genesis, debug: true })
+        log.append({ authorization: { profiles: [{ "key": "#sam", "roles": ["edge"] }] } }).then((result) => {
+            console.log("result", result)
+            log.last().then((node) => {
+                console.log("node", node)
+            })
+        })
+
+    </script>
+
+    <!-- <script src="../dist/microledger-iife.js"></script>
+    <script>
+
+        const log = new window.Microledger('mystorageiife', { genesis: { me: 'Javi' }, debug: true })
+        log.append({ wife: { name: 'Sam' } }).then((result) => {
+            console.log("result", result)
+            log.last().then((node) => {
+                console.log("node", node)
+            })
+        })
+    </script> -->
+
+</head>
+
+<body>
+    F12
+</body>
+
+</html>
